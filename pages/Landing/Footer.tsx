@@ -78,8 +78,10 @@ const NAVLINKS: NavLinks[] = [
         className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
       >
         {
-          NAVLINKS.map(({title,link}) => (
-        <li>
+          NAVLINKS.map(({title,link},idx) => (
+        <li
+        key={idx}
+        >
           <Link 
           className="text-slate-500 transition hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-emerald-400 hover:to-cyan-400 font-normal" 
           href={link}>

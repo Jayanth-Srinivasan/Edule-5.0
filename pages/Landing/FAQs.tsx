@@ -43,7 +43,8 @@ function FAQs() {
   <div className="-my-8 divide-y divide-gray-800">
     {FAQS.map((faq, idx) => (
 
-    <details className="group py-8 [&_summary::-webkit-details-marker]:hidden" >
+    <details className="group py-8 [&_summary::-webkit-details-marker]:hidden" 
+    key={idx}>
       <summary
         className="flex cursor-pointer items-center justify-between text-white">
         <h2 className="text-lg font-medium text-slate-200 hover:bg-gradient-to-r hover:from-emerald-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">

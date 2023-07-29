@@ -35,9 +35,11 @@ function Header() {
     <nav className="contents font-semibold ">
       <ul className="mx-auto md:flex items-center text-slate-300 text-mont hidden">
         {
-          NAVLINKS.map(({title,link}) => (
+          NAVLINKS.map(({title,link},idx) => (
 
-        <li className="p-5 xl:p-8 active hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-emerald-400 hover:to-cyan-400">
+        <li 
+        key={idx}
+        className="p-5 xl:p-8 active hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-emerald-400 hover:to-cyan-400">
           <Link 
             href={link}>
             <span>{title}</span>

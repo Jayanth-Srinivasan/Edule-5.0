@@ -1,6 +1,6 @@
 import { LayoutDashboard, ListChecks, MessagesSquare, User2} from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
@@ -38,6 +38,8 @@ const SIDEBARDATA: SidebarData[] = [
 ] 
 
 const SidebarLayout = ({children}: LayoutProps )=> {
+
+    const [user, setUser] = useState(typeof window !== "undefined" && JSON.parse(localStorage.getItem('user') || '{}'));
     return (
         <div className="w-full h-screen grid grid-cols-12">
             <div className="col-span-2 max-h-screen flex flex-col border-r border-slate-500/50">
@@ -57,10 +59,10 @@ const SidebarLayout = ({children}: LayoutProps )=> {
                 </div>
                 <div className="mt-auto flex items-center p-4 gap-2 bg-slate-800/40">
                     <Avatar>
-                        <AvatarImage src="https://github.com/surendar-pd.png" />
+                        <AvatarImage src={user.photo} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <h1>Surendar PD</h1>
+                    <h1>{user.name}</h1>
                 </div>
             </div>
             <main className="col-span-10 p-4 max-h-screen overflow-y-scroll">

@@ -1,7 +1,10 @@
 import Particles from '@/components/Particles'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 function Hero() {
+
+  const router = useRouter();
   return (
     <section className=" text-white">
       <Particles
@@ -26,9 +29,9 @@ function Hero() {
       </p>
 
       <div className="mt-8 flex flex-wrap justify-center gap-4">
-      <a
+      <div
         className="group relative inline-flex items-center overflow-hidden rounded-full bg-slate-900/80 px-8 py-3 text-white focus:outline-none focus:ring active:bg-indigo-500"
-        href="/download"
+        onClick={() => router.push("/auth/login")}
       >
         <span className="absolute -end-full transition-all group-hover:end-4">
           <svg
@@ -47,10 +50,10 @@ function Hero() {
           </svg>
         </span>
 
-        <span className="text-pop text-transparent  bg-clip-text bg-gradient-to-r from-emerald-400  to-cyan-400 text-md lg:text-lg font-bold transition-all group-hover:me-4">
+        <span  className="text-pop text-transparent  bg-clip-text bg-gradient-to-r from-emerald-400  to-cyan-400 text-md lg:text-lg font-bold transition-all group-hover:me-4">
           Get Started
         </span>
-      </a>
+      </div>
 
 
         {/* <a

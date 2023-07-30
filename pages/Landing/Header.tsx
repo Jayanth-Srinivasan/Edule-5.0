@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
+import { useRouter } from 'next/router';
 
 function Header() {
+
+
+  const router = useRouter();
 
     interface NavLinks {
         title: string,
@@ -50,7 +54,9 @@ function Header() {
       </ul>
     </nav>
     <button className="bg-slate-900/80 rounded-full font-bold px-8 py-2 md:flex flex-row  hidden">
-      <span className='text-mont text-transparent  bg-clip-text bg-gradient-to-r from-emerald-400  to-cyan-400'>Get Started</span>
+      <span 
+      onClick={() => router.push("/auth/login")}
+      className='text-mont text-transparent  bg-clip-text bg-gradient-to-r from-emerald-400  to-cyan-400'>Get Started</span>
     </button>
   </div>
   

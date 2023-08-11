@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import {auth,db} from '../../../backend/firebase';
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAdditionalUserInfo, signInWithPopup, updateProfile} from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import AuthLayout from '@/layouts/AuthLayout';
 import Head from 'next/head';
@@ -30,6 +30,8 @@ const SignUp = () => {
     const handleGoogleSignUp = () => {
         signInWithPopup(auth, googleProvider)
           .then(async (user) => {
+              const isFirstLogin = getAdditionalUserInfo(user)?.isNewUser
+              console.log(isFirstLogin)
              setDoc(
                 doc(db, "users", user?.user.uid),
                 {

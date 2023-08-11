@@ -129,7 +129,7 @@ const Login = () => {
                   <span onClick={() => router.push("/auth/reset-password")} className='flex cursor-pointer justify-end mt-2 text-emerald-400'>Forgot Password?</span>
               </div>
               <div className='md:w-2/5 w-3/4'>
-                  <button onClick={() => router.push("/dashboard")} className='w-full transition-all duration-300 hover:shadow-md bg-emerald-500/80 p-4 rounded-lg text-white'>Login</button>
+                  <button onClick={handleLogin} className='w-full transition-all duration-300 hover:shadow-md bg-emerald-500/80 p-4 rounded-lg text-white'>Login</button>
               </div>
               <div className='md:w-2/5 w-3/4 text-center'>
                   <span>Dont have an account yet?</span>

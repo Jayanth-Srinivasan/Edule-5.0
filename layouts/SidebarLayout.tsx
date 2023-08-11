@@ -1,4 +1,4 @@
-import { LayoutDashboard, ListChecks, MessagesSquare, User2} from "lucide-react";
+import { LayoutDashboard, ListChecks, MessagesSquare, User2,Library} from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -31,6 +31,11 @@ const SIDEBARDATA: SidebarData[] = [
         Icon: MessagesSquare
     },
     {
+        title:"E-Materials",
+        link:"/library",
+        Icon: Library
+    },
+    {
         title:"Profile",
         link:"#",
         Icon: User2
@@ -60,7 +65,7 @@ const SidebarLayout = ({children}: LayoutProps )=> {
                 <div className="mt-auto flex items-center p-4 gap-2 bg-slate-800/40">
                     <Avatar>
                         <AvatarImage src={user.photo} />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback>ED</AvatarFallback>
                     </Avatar>
                     <h1>{user.name}</h1>
                 </div>

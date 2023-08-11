@@ -42,11 +42,11 @@ const Header = () => {
     
   };
 
-  useEffect(() => {
-    const key = getRandomQuote();
+  useEffect(() =>  {
+     const key = getRandomQuote();
     const quote = QUOTES[key];
-    console.log(quote.message);
-    setQuote(quote.message)
+    console.log(quote?.message);
+    setQuote(quote?.message)
     
   }, []);
   return (

@@ -1,5 +1,9 @@
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
+import AddNewChatDialog from '@/components/Chat/AddNewChatDialog';
+
 
 interface ChatData {
     name: string,
@@ -23,8 +27,8 @@ const CHATDATA: ChatData[] = [
 
 const ChatSidebar = () => {
   return (
-    <div className="flex flex-col py-8 pl-6 pr-2 w-64  bg-slate-900 flex-shrink-0">
-        <div className="relative">
+    <div className="flex flex-col py-8 w-64 flex-shrink-0">
+        {/* <div className="relative">
           <label className="sr-only" htmlFor="search"> Search </label>
 
           <input
@@ -54,14 +58,15 @@ const ChatSidebar = () => {
               />
             </svg>
           </button>
-        </div>
+        </div> */}
+        <AddNewChatDialog/>
         <div className="flex flex-col mt-8 h-2/3 overflow-y-scroll">
         {
             CHATDATA.map(({name, photo},idx) => (
             <div className="mt-4 flex items-center p-4 gap-2  rounded-xl border-2 border-slate-500 hover:bg-slate-600/30" key={idx}>
                 <Avatar>
                     <AvatarImage src={photo} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>ED</AvatarFallback>
                 </Avatar>
                 <h1>{name}</h1>
             </div>

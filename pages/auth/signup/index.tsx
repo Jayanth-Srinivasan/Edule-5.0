@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import {auth,db} from '../../../backend/firebase';
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAdditionalUserInfo, signInWithPopup, updateProfile} from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc } from 'firebase/firestore';
 import AuthLayout from '@/layouts/AuthLayout';
 import Head from 'next/head';
 
@@ -14,7 +14,10 @@ const SignUp = () => {
         email: '',
         password: '',
         name:'',
+        username: '',
     });
+    const [getUsername,setGetUsername] = useState(false);
+    const [usernameList,setUsernameList] = useState<any[]>([]);
     const [user, setUser] = useState(typeof window !== "undefined" &&  JSON.parse(localStorage.getItem('user') || '{}'));
     const googleProvider = new GoogleAuthProvider();
 
@@ -25,24 +28,41 @@ const SignUp = () => {
     const handleChange = (prop: string) => (event: { target: { value: any; }; }) => {
         setValues({ ...values, [prop]: event.target.value });
     };
+    
+    const handleGoogleSignUp = (e: { preventDefault: () => void; } | undefined) => {
+      e?.preventDefault();
+      if(!values.username){
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Please Enter the Username",
+        })
+    }else{
+        if(usernameList.includes(values.username)){
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Username aldready exists"
+        })
+      }else{
 
-
-    const handleGoogleSignUp = () => {
+      
         signInWithPopup(auth, googleProvider)
           .then(async (user) => {
               const isFirstLogin = getAdditionalUserInfo(user)?.isNewUser
-              console.log(isFirstLogin)
-             setDoc(
-                doc(db, "users", user?.user.uid),
-                {
-                  name: user?.user.displayName,
-                  email: user?.user.email,
-                  photo: user?.user.photoURL,
-                  uid: user?.user.uid,
-                },
-                { merge: true }
+              if (isFirstLogin){
+                setDoc(
+                   doc(db, "users", values.username),
+                   {
+                     name: user?.user.displayName,
+                     email: user?.user.email,
+                     photo: user?.user.photoURL,
+                     uid: user?.user.uid,
+                     username : values.username,
+                   },
+                   { merge: true }
               ).then(async () => {
-                router.replace('/')
+                router.replace('/');
                   window.localStorage.setItem(
                     "user",
                     JSON.stringify({
@@ -60,13 +80,22 @@ const SignUp = () => {
                 });
               });
             // setUser(user);
+              }else {
+                toast({
+                  variant: "destructive",
+                  title: "Error",
+                  description: "User Already exists!",
+              })
+            }
           })
           .catch((error) => alert(error.message));
       };
+    }
+    }
 
     const handleEmailSignIn = async (e: { preventDefault: () => void; } | undefined) => {
         e?.preventDefault()
-        if(!values.email || !values.name || !values.password){
+        if(!values.email || !values.name || !values.password || !values.username){
             toast({
                 variant: "destructive",
                 title: "Error",
@@ -88,11 +117,12 @@ const SignUp = () => {
                     displayName: values.name,
                     photoURL: "https://github.com/shadcn.png"
                 }).then(() => {
-                    setDoc(doc(db, "users", user.uid), {
+                    setDoc(doc(db, "users", values.username), {
                         name: user.displayName,
                         email: user.email,
                         uid: user.uid,
-                        photo: user.photoURL
+                        photo: user.photoURL,
+                        username: values.username
                     }).then( async () =>{
                         router.replace('/')
                   window.localStorage.setItem(
@@ -144,6 +174,17 @@ const SignUp = () => {
             });
         }
     }
+    useEffect(() => {
+      const checkUsername = async() => {
+        const collectionRef = collection(db,"users");
+        const q = await getDocs(collectionRef);
+        const arr = q.docs.map((doc) => doc.id);
+        console.log(arr)
+        setUsernameList(arr)
+      }
+      checkUsername();
+      
+    }, [router.isReady])
     
   return (
     <>
@@ -151,12 +192,18 @@ const SignUp = () => {
       <title>Sign Up</title>
     </Head>
     <AuthLayout>
+      {
+        !getUsername?
+          <>
             <h1 className='text-center w-2/5 text-[1.5rem] font-semibold'>Sign Up</h1>
               <span className='text-md text-slate-300'>Create your Account Now! </span>
               <div className="md:w-2/5 w-3/4 flex items-center justify-center ">
-                  <button onClick={handleGoogleSignUp} className='w-full text-slate-300 p-4 rounded-lg bg-slate-300/20 transition-all duration-300 hover:shadow-md'> Sign Up with Google</button>
+                  <button onClick={() => setGetUsername(true)} className='w-full text-slate-300 p-4 rounded-lg bg-slate-300/20 transition-all duration-300 hover:shadow-md'> Sign Up with Google</button>
               </div>
               <p>Or</p>
+              <div className="md:w-2/5 w-3/4">
+                  <input value={values.username} type="text" required onChange={handleChange('username')} placeholder='@Username' className="w-full bg-slate-300/20 p-4 rounded-lg outline-none focus:outline focus:outline-emerald-400"/>
+              </div>
               <div className="md:w-2/5 w-3/4">
                   <input value={values.name} type="text" required onChange={handleChange('name')} placeholder='Name' className="w-full bg-slate-300/20 p-4 rounded-lg outline-none focus:outline focus:outline-emerald-400"/>
               </div>
@@ -174,6 +221,19 @@ const SignUp = () => {
                 <span>Already have an account?</span>
                 <span onClick={() => router.push("/auth/login")} className='mt-2 cursor-pointer text-emerald-400'> Login</span>                
             </div>
+            </>
+      :
+      <>
+            <h1 className='text-center w-2/5 text-[1.5rem] font-semibold'>Username</h1>
+              <span className='text-md text-slate-300'>Pick Your Username ! </span>
+              <div className="md:w-2/5 w-3/4">
+                  <input value={values.username} type="text" required onChange={handleChange('username')} placeholder='@Username' className="w-full bg-slate-300/20 p-4 rounded-lg outline-none focus:outline focus:outline-emerald-400"/>
+              </div>
+              <div className='md:w-2/5 w-3/4'>
+                  <button onClick={handleGoogleSignUp} className='w-full transition-all duration-300 hover:shadow-md bg-emerald-500/80 p-4 rounded-lg text-white'>Sign Up</button>
+              </div>
+            </>
+}
     </AuthLayout>
     </>
   )

@@ -70,6 +70,7 @@ const SignUp = () => {
                       email: user?.user.email,
                       photo: user?.user.photoURL,
                       uid: user?.user.uid,
+                      username: values.username
                     })
                   );
                 setUser({
@@ -77,6 +78,7 @@ const SignUp = () => {
                   email: user?.user.email,
                   photo: user?.user.photoURL,
                   uid: user?.user.uid,
+                  username: values.username
                 });
               });
             // setUser(user);
@@ -131,14 +133,16 @@ const SignUp = () => {
                         name: user.displayName,
                         email: user.email,
                         uid: user.uid,
-                        photo: user.photoURL
+                        photo: user.photoURL,
+                        username: values.username
                     })
                   );
                 setUser({
                     name: user.displayName,
                     email: user.email,
                     uid: user.uid,
-                    photo: user.photoURL
+                    photo: user.photoURL,
+                    username: values.username
                 });
                     })
                     // router.replace('/')

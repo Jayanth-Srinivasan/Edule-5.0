@@ -70,7 +70,7 @@ const SignUp = () => {
                       email: user?.user.email,
                       photo: user?.user.photoURL,
                       uid: user?.user.uid,
-                      username: values.username
+                      username: values.username,
                     })
                   );
                 setUser({
@@ -78,7 +78,7 @@ const SignUp = () => {
                   email: user?.user.email,
                   photo: user?.user.photoURL,
                   uid: user?.user.uid,
-                  username: values.username
+                  username: values.username,
                 });
               });
             // setUser(user);
@@ -124,7 +124,7 @@ const SignUp = () => {
                         email: user.email,
                         uid: user.uid,
                         photo: user.photoURL,
-                        username: values.username
+                        username: values.username,
                     }).then( async () =>{
                         router.replace('/')
                   window.localStorage.setItem(
@@ -134,7 +134,7 @@ const SignUp = () => {
                         email: user.email,
                         uid: user.uid,
                         photo: user.photoURL,
-                        username: values.username
+                        username: values.username,
                     })
                   );
                 setUser({
@@ -142,7 +142,7 @@ const SignUp = () => {
                     email: user.email,
                     uid: user.uid,
                     photo: user.photoURL,
-                    username: values.username
+                    username: values.username,
                 });
                     })
                     // router.replace('/')

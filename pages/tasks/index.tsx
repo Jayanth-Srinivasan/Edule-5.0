@@ -32,13 +32,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { GradientPicker } from '@/components/PickerExample'
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
+import { collection, doc, getDocs, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore'
 import { db } from '@/backend/firebase'
+import { useRouter } from 'next/router'
 
 
 interface PriorityList {
@@ -102,6 +103,7 @@ const POMORODOLIST: PomorodoList[] =[
 ]
 const Task = () => {
   const [user, setUser] = useState(typeof window !== "undefined" && JSON.parse(localStorage.getItem('user') || '{}'));
+  const [tasks,setTasks] = useState<any[]>([]);
   const [date, setDate] = useState<Date>();
   const [background, setBackground] = useState('');
   const [priority,setPriority] = useState('');
@@ -110,6 +112,8 @@ const Task = () => {
     title: '',
     desc: '',
 });
+
+  const router = useRouter()
   console.log(user);
 
   const handleChange = (prop: string) => (event: { target: { value: any; }; }) => {
@@ -134,6 +138,21 @@ const Task = () => {
       console.log("task added");
     }).catch((error) => alert(error.message));
   };
+
+  useEffect(()=>{
+    const unsub = onSnapshot(
+      collection(db,"users",`${user.username}`,"tasks"),
+      (collectionRef) => {
+        let arr:any = [];
+        collectionRef.forEach((doc) => {
+          arr.push({...doc.data(),id:doc.id})
+        });
+        setTasks(arr);
+      })
+
+      return () => unsub();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[router.isReady]);
   return (
     <SidebarLayout>
       <div className='h-screen'>
@@ -251,22 +270,29 @@ const Task = () => {
                 <ListFilter className="h-6 w-6 mt-1"/>
               </div>
               <Separator className="my-4 bg-white" />
-              <ScrollArea className='h-96'>
-                <div className=' rounded-xl bg-amber-400/90 my-4 text-black p-4'>
+              <ScrollArea className='h-[550px]'>
+              {
+              tasks.map((task, idx) => (
+                task.status=='todo' ?
+                (<div key={idx} onClick={() => router.push(`/tasks/${task.title}`)} className={`rounded-xl bg-[${task.color}]  bg-amber-400/80 my-4 text-black p-4 cursor-pointer`}>
                   <div className='flex flex-row justify-between'>
-                    <span className='text-md font-normal'>13 Aug</span>
+                    <span className='text-md font-normal'>{task.deadline?.toDate().toString().slice(4,10)}</span>
                     <ArrowUpRightFromCircle />
                   </div>
                   <div className='my-4'>
-                    <h2 className='font-semibold text-2xl font-mono'>I Have To Do This! blah blah blah</h2>
+                    <h2 className='font-semibold text-2xl font-mono'>{task.title}</h2>
                   </div>
                   <div className=''>
-                    <Badge className='bg-red-600/80 mx-1'>A+</Badge>
-                    <Badge className='bg-slate-100 mx-1'>🍅🍅🍅</Badge>
-                    <Badge className='mx-1 bg-sky-950 text-white'>Anything</Badge>
+                    <Badge className={`${task.priority === 'A+' ? 'bg-red-500' : task.priority==='A' ? 'bg-orange-500' : task.priority ==='B'? 'bg-amber-500': task.priority === 'C' ? 'bg-lime-500' : 'bg-green-500'} font-bold mx-1`}>{task.priority}</Badge>
+                    <Badge className='bg-slate-100 mx-1'>{"🍅".repeat(parseInt(task.pomorodo))}</Badge>
+                    {/* <Badge className='mx-1 bg-sky-950 text-white'>Anything</Badge> */}
                   </div>
-                </div>
-                <div className=' rounded-xl bg-sky-400/90 my-4 text-black p-4'>
+                </div>)
+                :
+                null
+              ))
+}
+                {/* <div className=' rounded-xl bg-sky-400/90 my-4 text-black p-4'>
                   <div className='flex flex-row justify-between'>
                     <span className='text-md font-normal'>Today</span>
                     <ArrowUpRightFromCircle />
@@ -279,7 +305,7 @@ const Task = () => {
                     <Badge className='bg-slate-100 mx-1'>🍅🍅</Badge>
                     <Badge className='mx-1 bg-sky-950 text-white'>Everything</Badge>
                   </div>
-                </div>
+                </div> */}
               </ScrollArea>
             </div>
             <div className="rounded-lg bg-slate-900/80 p-4">
@@ -288,22 +314,29 @@ const Task = () => {
                 <ListFilter className="h-6 w-6 mt-1"/>
               </div>
                 <Separator className="my-4 bg-white" />
-                <ScrollArea className='h-96'>
+                <ScrollArea className='h-[550px]'>
                 
-                <div className=' rounded-xl bg-sky-400/90 my-4 text-black p-4'>
+                {
+              tasks.map((task, idx) => (
+                task.status=='active' ?
+                (<div key={idx} onClick={() => router.push(`/tasks/${task.title}`)} className={`rounded-xl bg-sky-400/90 bg-[${task.color}] my-4 text-black p-4`}>
                   <div className='flex flex-row justify-between'>
-                    <span className='text-md font-normal'>Today</span>
+                    <span className='text-md font-normal'>{task.deadline?.toDate().toString().slice(4,10)}</span>
                     <ArrowUpRightFromCircle />
                   </div>
                   <div className='my-4'>
-                    <h2 className='font-semibold text-2xl font-mono'>I Have To Gili Jili Blili blah blah blah</h2>
+                    <h2 className='font-semibold text-2xl font-mono'>{task.title}</h2>
                   </div>
                   <div className=''>
-                    <Badge className='mx-1 bg-green-600/80'>C</Badge>
-                    <Badge className='bg-slate-100 mx-1'>🍅🍅</Badge>
-                    <Badge className='mx-1 bg-sky-950 text-white'>Everything</Badge>
+                    <Badge className={`${task.priority === 'A+' ? 'bg-red-500' : task.priority==='A' ? 'bg-orange-500' : task.priority ==='B'? 'bg-amber-500': task.priority === 'C' ? 'bg-lime-500' : 'bg-green-500'} font-bold mx-1`}>{task.priority}</Badge>
+                    <Badge className='bg-slate-100 mx-1'>{"🍅".repeat(parseInt(task.pomorodo))}</Badge>
+                    <Badge className='mx-1 bg-sky-950 text-white'>Anything</Badge>
                   </div>
-                </div>
+                </div>)
+                :
+                null
+              ))
+}
               </ScrollArea>
             </div>
             <div className="rounded-lg bg-slate-900/80 p-4">
@@ -312,21 +345,28 @@ const Task = () => {
                 <ListFilter className="h-6 w-6 mt-1"/>
               </div>
                 <Separator className="my-4 bg-white" />
-                <ScrollArea className='h-96'>
-                <div className=' rounded-xl bg-amber-400/90 my-4 text-black p-4'>
+                <ScrollArea className='h-[550px]'>
+                {
+              tasks.map((task, idx) => (
+                task.status=='done' ?
+                (<div key={idx} onClick={() => router.push(`/tasks/${task.title}`)} className={`rounded-xl bg-lime-400/90 bg-[${task.color}] my-4 text-black p-4`}>
                   <div className='flex flex-row justify-between'>
-                    <span className='text-md font-normal'>13 Aug</span>
+                    <span className='text-md font-normal'>{task.deadline?.toDate().toString().slice(4,10)}</span>
                     <ArrowUpRightFromCircle />
                   </div>
                   <div className='my-4'>
-                    <h2 className='font-semibold text-2xl font-mono'>I Have To Do This! blah blah blah</h2>
+                    <h2 className='font-semibold text-2xl font-mono'>{task.title}</h2>
                   </div>
                   <div className=''>
-                    <Badge className='bg-red-600/80 mx-1'>A+</Badge>
-                    <Badge className='bg-slate-100 mx-1'>🍅🍅🍅</Badge>
+                    <Badge className={`${task.priority === 'A+' ? 'bg-red-500' : task.priority==='A' ? 'bg-orange-500' : task.priority ==='B'? 'bg-amber-500': task.priority === 'C' ? 'bg-lime-500' : 'bg-green-500'} font-bold mx-1`}>{task.priority}</Badge>
+                    <Badge className='bg-slate-100 mx-1'>{"🍅".repeat(parseInt(task.pomorodo))}</Badge>
                     <Badge className='mx-1 bg-sky-950 text-white'>Anything</Badge>
                   </div>
-                </div>
+                </div>)
+                :
+                null
+              ))
+}
                 
               </ScrollArea>
             </div>

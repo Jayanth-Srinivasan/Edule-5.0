@@ -43,6 +43,7 @@ export default function Particles({
 
 	useEffect(() => {
 		onMouseMove();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mousePosition.x, mousePosition.y]);
 
 	useEffect(() => {

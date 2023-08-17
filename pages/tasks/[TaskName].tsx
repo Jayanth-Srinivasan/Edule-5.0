@@ -1,4 +1,5 @@
 import { db } from '@/backend/firebase';
+import Editor from '@/components/editor';
 import { Badge } from '@/components/ui/badge';
 import SidebarLayout from '@/layouts/SidebarLayout'
 import { collection, doc, getDoc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
@@ -78,8 +79,8 @@ const TaskInfo = () => {
               </div>
             </div>
             <div className='h-full mt-8 flex justify-center items-center'>
-              <div className='w-5/6 h-full border-slate-50/40 rounded-xl border'>
-                Editor
+              <div className='w-5/6 rounded-xl'>
+                <Editor/>
               </div>
             </div>
           </div>

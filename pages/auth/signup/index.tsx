@@ -37,14 +37,16 @@ const SignUp = () => {
             title: "Error",
             description: "Please Enter the Username",
         })
-    }else{
+    }else
+    {
         if(usernameList.includes(values.username)){
           toast({
             variant: "destructive",
             title: "Error",
             description: "Username aldready exists"
         })
-      }else{
+      }else
+      {
 
       
         signInWithPopup(auth, googleProvider)

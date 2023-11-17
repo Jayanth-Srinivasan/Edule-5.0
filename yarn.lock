@@ -578,6 +578,28 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@liveblocks/client@1.7.1", "@liveblocks/client@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@liveblocks/client/-/client-1.7.1.tgz#35ec042c0dac6afb2a9ba549deed857d26c0b30a"
+  integrity sha512-i/r4CrKcFAuJw7RFPsbyr3NobeVc3rylGSOtAY70Acl9UO6i0Qe1Ai7V+uWKfzooqAiThwrr8mPxtfu0ji4DRA==
+  dependencies:
+    "@liveblocks/core" "1.7.1"
+
+"@liveblocks/core@1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@liveblocks/core/-/core-1.7.1.tgz#a09ebae0ad1b09afba85120617ebb4bfc6e8d42e"
+  integrity sha512-x3HBVFk9tWppCkzScVaFn8VqTPC+rKgNxiB8bkazJmplYJO6/2k0oBHEq5lA034ERzVVdW1qkWMQKhmINNJiIQ==
+
+"@liveblocks/react@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@liveblocks/react/-/react-1.7.1.tgz#df8120441df0a1113e1d423a9c286492ce2eee1e"
+  integrity sha512-qx+zbTu0hUUj8U8ydB0YEY0+DFR0PuTGVN9hlFHTxWE5Xr0eRFlFegyE6FGtXfTHkyxtQ1vQvoBQcUO/i7+VBA==
+  dependencies:
+    "@liveblocks/client" "1.7.1"
+    "@liveblocks/core" "1.7.1"
+    nanoid "^3"
+    use-sync-external-store "^1.2.0"
+
 "@mapbox/node-pre-gyp@^1.0.0":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.11.tgz#417db42b7f5323d79e93b34a6d7a2a12c0df43fa"
@@ -3327,6 +3349,11 @@ nan@^2.17.0:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.17.0.tgz#c0150a2368a182f033e9aa5195ec76ea41a199cb"
   integrity sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==
 
+nanoid@^3:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
+  integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
+
 nanoid@^3.3.4, nanoid@^3.3.6:
   version "3.3.6"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
@@ -4592,6 +4619,11 @@ use-sidecar@^1.1.2:
   dependencies:
     detect-node-es "^1.1.0"
     tslib "^2.0.0"
+
+use-sync-external-store@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2:
   version "1.0.2"

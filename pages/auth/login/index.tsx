@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useToast } from "@/components/ui/use-toast"
 import {auth,db} from '../../../backend/firebase';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import AuthLayout from '@/layouts/AuthLayout';
 import Head from 'next/head';
 
@@ -20,19 +20,14 @@ const Login = () => {
 
 
 
-    const handleGoogleSignIn = () => {
+    const handleGoogleSignIn = async() => {
       signInWithPopup(auth, googleProvider)
         .then(async (user) => {
-           setDoc(
-              doc(db, "users", user?.user.uid),
-              {
-                name: user?.user.displayName,
-                email: user?.user.email,
-                photo: user?.user.photoURL,
-                uid: user?.user.uid,
-              },
-              { merge: true }
-            ).then(async () => {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("email", "==", user?.user.email));
+          const querySnapshot = await getDocs(q)
+          console.log(querySnapshot.docs[0].data())
+          const userData = querySnapshot.docs[0].data()
               router.replace('/')
                 window.localStorage.setItem(
                   "user",
@@ -41,6 +36,7 @@ const Login = () => {
                     email: user?.user.email,
                     photo: user?.user.photoURL,
                     uid: user?.user.uid,
+                    username: userData.username,
                   })
                 );
               setUser({
@@ -48,10 +44,11 @@ const Login = () => {
                 email: user?.user.email,
                 photo: user?.user.photoURL,
                 uid: user?.user.uid,
+                username: userData.username,
               });
-            });
+            })
           // setUser(user);
-        })
+        // })
         .catch((error: { message: any; }) => alert(error.message));
     };
 

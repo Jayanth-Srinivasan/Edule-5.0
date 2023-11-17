@@ -11,19 +11,22 @@ interface ChatData {
 }[];
 
 const CHATDATA: ChatData[] = [
-    {
-        name:"Jayanth Srinivasan",
-        photo:"https://lh3.googleusercontent.com/a/AAcHTtcEsCKd7KvlhRd75O05_oLNEc-VGn7BIQOySNLkxARcL2U=s96-c",
-    },
-    {
-        name:"Niranjanee Mohan",
-        photo:"https://lh3.googleusercontent.com/a/AATXAJzOtl_R4E_y4pR8R4m2yYRdNUhutPQhbShQkbIn=s96-c",
-    },
-    {
-        name:"Nandhana C",
-        photo:"https://lh3.googleusercontent.com/a/ALm5wu15w0Xkqq-9NakAPpQOLNxYFhATGn7BZAMLn0CE=s96-c",
-    },
-]
+  {
+    name: "User 1",
+    photo:
+      "https://lh3.googleusercontent.com/a/AATXAJzOtl_R4E_y4pR8R4m2yYRdNUhutPQhbShQkbIn=s96-c",
+  },
+  {
+    name: "User 2",
+    photo:
+      "https://lh3.googleusercontent.com/a/AATXAJzOtl_R4E_y4pR8R4m2yYRdNUhutPQhbShQkbIn=s96-c",
+  },
+  {
+    name: "User 3",
+    photo:
+      "https://lh3.googleusercontent.com/a/ALm5wu15w0Xkqq-9NakAPpQOLNxYFhATGn7BZAMLn0CE=s96-c",
+  },
+];
 
 const ChatSidebar = () => {
   return (
